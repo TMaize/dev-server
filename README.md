@@ -27,7 +27,7 @@ A simple dev server.
 
 - [x] https support
 
-- [ ] reverse proxy, cors
+- [x] http reverse proxy, cors
 
 - [ ] [trust Root CA](https://github.com/FiloSottile/mkcert/blob/master/truststore_windows.go)
 
@@ -35,9 +35,17 @@ A simple dev server.
 
 ## Usage
 
+static server
+
 ```
-dev-server start .
+dev-server start
 dev-server start -p 8443 --https --domain test.com /site/demo 
+```
+
+http reverse proxy
+
+```
+dev-server proxy --target https://uptream.com:8443 
 ```
 
 ## Acknowledgments

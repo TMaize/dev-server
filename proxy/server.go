@@ -1,15 +1,14 @@
-package web
+package proxy
 
 import (
 	"crypto/tls"
-	_ "embed"
 	"errors"
 	"fmt"
 	"github.com/TMaize/dev-server/util"
 	"net"
 	"net/http"
-	"os"
-	"path"
+	"net/http/httputil"
+	"net/url"
 	"strings"
 	"time"
 )
@@ -19,11 +18,35 @@ type Server struct {
 	Address     string
 	Port        uint
 	Domain      string
-	Root        string
+	Cors        bool
+	Target      string
 	caFile      string
 	cerData     []byte
 	keyData     []byte
 	certificate tls.Certificate
+}
+
+func (s *Server) director(req *http.Request) {
+	target, _ := url.Parse(s.Target)
+
+	req.URL.Scheme = target.Scheme
+	req.URL.Host = target.Host
+	req.Host = target.Host
+
+	req.Header["X-Forwarded-For"] = nil
+}
+
+func (s *Server) modify(resp *http.Response) error {
+	if s.Cors {
+		resp.Header.Set("Access-Control-Allow-Origin", resp.Request.Header.Get("Origin"))
+		resp.Header.Set("Access-Control-Allow-Methods", "*")
+		resp.Header.Set("Access-Control-Allow-Credentials", "true")
+		resp.Header.Set("Access-Control-Expose-Headers", "Token")
+		resp.Header.Set("Access-Control-Allow-Headers", "Content-Type,AccessToken,X-CSRF-Token,Authorization,Token")
+		resp.Header.Set("Access-Control-Max-Age", "3600")
+	}
+
+	return nil
 }
 
 func (s *Server) PreRun() error {
@@ -42,10 +65,10 @@ func (s *Server) PreRun() error {
 		return errors.New("can't listen 80 for https")
 	}
 
-	if s.Root == "" {
-		s.Root = "."
+	targetUrl, err := url.Parse(s.Target)
+	if err != nil || (targetUrl.Scheme != "http" && targetUrl.Scheme != "https") {
+		return errors.New("Invalid target: " + s.Target)
 	}
-	s.Root = util.FmtFilePath(s.Root)
 
 	// init ca cer
 	if s.Https {
@@ -85,7 +108,6 @@ func (s *Server) PreRun() error {
 }
 
 func (s *Server) PrintArgs() {
-
 	urlList := make([]string, 0)
 
 	urlList = append(urlList, util.BuildURL(s.Https, s.Address, s.Port))
@@ -94,44 +116,13 @@ func (s *Server) PrintArgs() {
 	fmt.Printf("  https: %v\n", s.Https)
 	fmt.Printf("address: %s\n", s.Address)
 	fmt.Printf("   port: %d\n", s.Port)
-	fmt.Printf("   root: %s\n", s.Root)
 	if s.Https {
 		fmt.Printf(" use CA: %s\n", s.caFile)
 	}
-	fmt.Printf("    url: %v\n", strings.Join(urlList, " , "))
+	fmt.Printf("  proxy: [%s] => %s\n", strings.Join(urlList, ", "), s.Target)
 
 	time.Sleep(time.Second * 3)
 	fmt.Println("press ctrl-c to stop.")
-}
-
-func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	file := path.Join(s.Root, r.URL.Path)
-	info, err := os.Stat(file)
-
-	if r.Method == "GET" {
-		w.Header().Set("Cache-Control", "no-cache")
-	}
-
-	if err != nil {
-		if os.IsNotExist(err) {
-			Render404(w, r)
-		} else {
-			Render500(w, r, err)
-		}
-		return
-	}
-
-	if strings.HasSuffix(r.URL.Path, "/") && info.IsDir() {
-		RenderDir(w, r, file)
-		return
-	}
-
-	if !strings.HasSuffix(r.URL.Path, "/") && !info.IsDir() {
-		RenderFile(w, r, file)
-		return
-	}
-
-	Render404(w, r)
 }
 
 func (s *Server) Run() error {
@@ -139,10 +130,14 @@ func (s *Server) Run() error {
 		return err
 	}
 
-	// custom init
+	handler := httputil.ReverseProxy{
+		Director:       s.director,
+		ModifyResponse: s.modify,
+	}
+
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", s.Address, s.Port),
-		Handler: s,
+		Handler: &handler,
 	}
 
 	go s.PrintArgs()

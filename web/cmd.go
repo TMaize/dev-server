@@ -26,7 +26,7 @@ func GetCmd() *cobra.Command {
 				cmdArgs.root = args[len(args)-1]
 			}
 
-			server := StaticServer{
+			server := Server{
 				Https:   *cmdArgs.https,
 				Address: *cmdArgs.address,
 				Port:    *cmdArgs.port,
@@ -42,10 +42,10 @@ func GetCmd() *cobra.Command {
 	}
 
 	cmdArgs = CmdArgs{
-		https:   command.Flags().BoolP("https", "s", false, "Enable https"),
-		address: command.Flags().StringP("address", "a", "0.0.0.0", "Listen address"),
-		port:    command.Flags().UintP("port", "p", 0, "Listen port (default 80/443)"),
-		domain:  command.Flags().String("domain", "localhost", "Generate cert for domain"),
+		https:   command.Flags().BoolP("https", "s", false, "enable https"),
+		address: command.Flags().StringP("address", "a", "0.0.0.0", "listen address"),
+		port:    command.Flags().UintP("port", "p", 0, "listen port (default 80/443)"),
+		domain:  command.Flags().String("domain", "localhost", "generate cert for domain"),
 	}
 
 	return command
