@@ -2,6 +2,10 @@
 
 A simple dev server.
 
+If https is enabled, You should trust the root CA. It is generated in ` ~/.dev-server/ca.cer`.
+
+![cer](./doc/cer.png)
+
 ## Install
 
 + download [releases](https://github.com/TMaize/dev-server/releases)
@@ -26,6 +30,8 @@ A simple dev server.
 - [x] static server
 
 - [x] https support
+
+- [x] list dir
 
 - [x] http reverse proxy, cors
 
