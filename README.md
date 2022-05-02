@@ -10,8 +10,9 @@ A simple dev server.
 
     ```shell
     # ${GOPATH}/bin
-    go get github.com/TMaize/dev-server
+    go install github.com/TMaize/dev-server@latest
     ```
+
 + build
 
     ```shell
