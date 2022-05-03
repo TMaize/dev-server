@@ -133,6 +133,9 @@ func (s *Server) Run() error {
 	handler := httputil.ReverseProxy{
 		Director:       s.director,
 		ModifyResponse: s.modify,
+		Transport: &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
 	}
 
 	server := &http.Server{
