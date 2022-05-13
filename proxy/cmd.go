@@ -7,12 +7,13 @@ import (
 )
 
 type CmdArgs struct {
-	https   *bool
-	address *string
-	port    *uint
-	domain  *string
-	cors    *bool
-	target  *string
+	https       *bool
+	address     *string
+	port        *uint
+	domain      *string
+	cors        *bool
+	target      *string
+	requestHost *string
 }
 
 func GetCmd() *cobra.Command {
@@ -23,12 +24,13 @@ func GetCmd() *cobra.Command {
 		Short: "HTTP reverse proxy",
 		Run: func(cmd *cobra.Command, args []string) {
 			server := Server{
-				Https:   *cmdArgs.https,
-				Address: *cmdArgs.address,
-				Port:    *cmdArgs.port,
-				Domain:  *cmdArgs.domain,
-				Cors:    *cmdArgs.cors,
-				Target:  *cmdArgs.target,
+				Https:       *cmdArgs.https,
+				Address:     *cmdArgs.address,
+				Port:        *cmdArgs.port,
+				Domain:      *cmdArgs.domain,
+				Cors:        *cmdArgs.cors,
+				Target:      *cmdArgs.target,
+				RequestHost: *cmdArgs.requestHost,
 			}
 
 			if err := server.Run(); err != nil {
@@ -40,12 +42,13 @@ func GetCmd() *cobra.Command {
 	}
 
 	cmdArgs = CmdArgs{
-		https:   command.Flags().BoolP("https", "s", false, "enable https"),
-		address: command.Flags().StringP("address", "a", "0.0.0.0", "listen address"),
-		port:    command.Flags().UintP("port", "p", 0, "listen port (default 80/443)"),
-		domain:  command.Flags().String("domain", "localhost", "generate cert for domain"),
-		cors:    command.Flags().Bool("cors", false, "add cors header"),
-		target:  command.Flags().StringP("target", "t", "", "proxy target, https://uptream.com:8443"),
+		https:       command.Flags().BoolP("https", "s", false, "enable https"),
+		address:     command.Flags().StringP("address", "a", "0.0.0.0", "listen address"),
+		port:        command.Flags().UintP("port", "p", 0, "listen port (default 80/443)"),
+		domain:      command.Flags().String("domain", "localhost", "generate cert for domain"),
+		cors:        command.Flags().Bool("cors", false, "add cors header"),
+		target:      command.Flags().StringP("target", "t", "", "*request target. example: https://uptream.com:8443"),
+		requestHost: command.Flags().String("requestHost", "", "request target width host (default follow client)"),
 	}
 
 	_ = command.MarkFlagRequired("target")
