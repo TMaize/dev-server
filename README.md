@@ -8,22 +8,19 @@ If https is enabled, You should trust the root CA. It is generated in ` ~/.dev-s
 
 ## Install
 
-+ download [releases](https://github.com/TMaize/dev-server/releases)
+- download [releases](https://github.com/TMaize/dev-server/releases)
 
-+ install
+- Go
 
-    ```shell
-    # ${GOPATH}/bin
-    go install github.com/TMaize/dev-server@latest
-    ```
+  ```shell
+  go install github.com/TMaize/dev-server@latest
+  ```
 
-+ build
+- Node.js
 
-    ```shell
-    git clone https://github.com/TMaize/dev-server.git
-    cd dev-server
-    make
-    ```
+  ```shell
+  npm install @tmaize/dev-server -g
+  ```
 
 ## Feature
 
@@ -45,13 +42,13 @@ static server
 
 ```
 dev-server start
-dev-server start -p 8443 --https --domain test.com /site/demo 
+dev-server start -p 8443 --https --domain test.com /site/demo
 ```
 
 http reverse proxy
 
 ```
-dev-server proxy --target https://uptream.com:8443 
+dev-server proxy --target https://uptream.com:8443
 ```
 
 ## Acknowledgments

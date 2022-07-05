@@ -1,0 +1,24 @@
+{
+  "name": "@tmaize/dev-server",
+  "version": "0.0.1",
+  "description": "A simple dev server",
+  "main": "index.js",
+  "scripts": {
+    "install": "node scripts/install.js",
+    "sync": "node scripts/sync.js"
+  },
+  "bin": {
+    "dev-server": "./bin/dev-server"
+  },
+  "keywords": [
+    "dev-server",
+    "https"
+  ],
+  "repository": "https://github.com/TMaize/dev-server.git",
+  "author": "TMaize <1772314831@qq.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "18.0.1",
+    "axios": "0.27.2"
+  }
+}

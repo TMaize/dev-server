@@ -19,8 +19,13 @@ jobs:
         with:
           go-version: 1.18
 
-      - name: Show Tag
-        run: echo ${{ github.ref }}
+      - name: env
+        run: |
+          env
+          echo -------
+          echo ${{ github.ref }}
+          echo -------
+          echo ${{ github.ref_name }}
 
       - name: Build
         run: make
@@ -31,8 +36,26 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }} # settings/Actions/General (Read and write permissions)
           files: |
             dist/dev-server-linux-x64.tar.gz
-            dist/dev-server-mac-x64.tar.gz
-            dist/dev-server-windows-x64.zip
+            dist/dev-server-darwin-x64.tar.gz
+            dist/dev-server-win32-x64.zip
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+          registry-url: https://registry.npmjs.org
+
+      - name: Publish to NPM
+        run: |
+          cd .github/npm
+          rm -rf ./bin
+          cp -r ../../dist bin
+          rm -rf ./README.md
+          cp ../../README.md .
+          npm version ${{ github.ref_name }}
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 #      - name: Create Release
 #        id: create_release

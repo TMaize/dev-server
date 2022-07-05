@@ -1,2 +1,4 @@
 .idea
+.github/workflows/npm/bin
+.github/workflows/npm/README.md
 dist
