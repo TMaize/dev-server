@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const os = require('os')
+const fs = require('fs')
+const path = require('path')
+const childProcess = require('child_process')
+
+function getBinFile() {
+  const platform = os.platform()
+  const arch = os.arch()
+
+  const cwd = path.resolve(__dirname, '..', 'release')
+  const zipFile = `dev-server-${platform}-${arch}` + (platform === 'win32' ? '.zip' : '.tar.gz')
+  const binPath = path.resolve(__dirname, '..', 'release', platform === 'win32' ? 'dev-server.exe' : 'dev-server')
+
+  if (fs.existsSync(binPath)) {
+    return binPath
+  }
+
+  if (platform == 'win32') {
+    childProcess.execSync(`Expand-Archive -Force ${zipFile} .`, { stdio: 'inherit', shell: 'powershell.exe', cwd })
+  } else {
+    childProcess.execSync(`tar xf ${zipFile}`, { stdio: 'inherit', cwd })
+  }
+  return binPath
+}
+
+const binPath = getBinFile()
+
+const child = childProcess
+  .spawn(binPath, process.argv.slice(2), {
+    stdio: 'inherit'
+  })
+  .on('error', err => {
+    console.error(err)
+    process.exit(1)
+  })
+  .on('exit', code => process.exit(code))
+
+process.on('SIGTERM', () => child.kill('SIGTERM'))
+process.on('SIGINT', () => child.kill('SIGINT'))
