@@ -3,7 +3,7 @@
 
 # go build -ldflags "-X main.Version=$(git describe --tags)"
 
-build: clean win linux mac
+build: clean win linux mac mac2
 clean:
 	rm -rf dist
 	mkdir -p dist
@@ -18,3 +18,7 @@ mac:
 	GOOS=darwin  GOARCH=amd64 go build -ldflags "-w -X main.Version=$$(git describe --tags)" -o ./dist/dev-server main.go
 	cd dist && 7z a -sdel dev-server-darwin-x64.tar dev-server
 	cd dist && 7z a -sdel dev-server-darwin-x64.tar.gz dev-server-darwin-x64.tar
+mac2:
+	GOOS=darwin  GOARCH=arm64 go build -ldflags "-w -X main.Version=$$(git describe --tags)" -o ./dist/dev-server main.go
+	cd dist && 7z a -sdel dev-server-darwin-arm64.tar dev-server
+	cd dist && 7z a -sdel dev-server-darwin-arm64.tar.gz dev-server-darwin-arm64.tar

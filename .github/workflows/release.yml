@@ -37,6 +37,7 @@ jobs:
           files: |
             dist/dev-server-linux-x64.tar.gz
             dist/dev-server-darwin-x64.tar.gz
+            dist/dev-server-darwin-arm64.tar.gz
             dist/dev-server-win32-x64.zip
 
       - name: Setup Node.js
