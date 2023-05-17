@@ -20,7 +20,7 @@ func GetConfigFile(subPath string) (string, error) {
 		if !os.IsNotExist(err) {
 			return "", err
 		}
-		err = os.MkdirAll(configDir, os.ModeDir)
+		err = os.MkdirAll(configDir, os.ModePerm)
 		if err != nil {
 			return "", err
 		}

@@ -5,13 +5,14 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"github.com/TMaize/dev-server/util"
 	"net"
 	"net/http"
 	"os"
 	"path"
 	"strings"
 	"time"
+
+	"github.com/TMaize/dev-server/util"
 )
 
 type Server struct {
@@ -24,6 +25,7 @@ type Server struct {
 	cerData     []byte
 	keyData     []byte
 	certificate tls.Certificate
+	ipList      []string
 }
 
 func (s *Server) PreRun() error {
@@ -32,6 +34,13 @@ func (s *Server) PreRun() error {
 		if s.Https {
 			s.Port = 443
 		}
+	}
+
+	if s.Address == "0.0.0.0" {
+		list := util.GetLocalIP()
+		s.ipList = append(s.ipList, list...)
+	} else {
+		s.ipList = append(s.ipList, s.Address)
 	}
 
 	if !s.Https && s.Port == 443 {
@@ -58,14 +67,17 @@ func (s *Server) PreRun() error {
 
 	// init domain cer
 	if s.Https {
-		alternateIPs := []net.IP{net.IPv4(127, 0, 0, 1)}
+		alternateIPs := make([]net.IP, 0) //[]net.IP{net.IPv4(127, 0, 0, 1)}
 		alternateDNS := make([]string, 0)
+
 		if s.Domain != "localhost" {
 			alternateDNS = append(alternateDNS, s.Domain)
 		}
-		if s.Address != "127.0.0.1" {
-			alternateIPs = append(alternateIPs, net.ParseIP(s.Address).To4())
+
+		for _, addr := range s.ipList {
+			alternateIPs = append(alternateIPs, net.ParseIP(addr).To4())
 		}
+
 		cerByte, keyByte, err := util.GenerateCertByDefaultCA("localhost", alternateIPs, alternateDNS)
 		if err != nil {
 			return errors.New("GenerateCertByDefaultCA Error: " + err.Error())
@@ -88,7 +100,9 @@ func (s *Server) PrintArgs() {
 
 	urlList := make([]string, 0)
 
-	urlList = append(urlList, util.BuildURL(s.Https, s.Address, s.Port))
+	for _, addr := range s.ipList {
+		urlList = append(urlList, util.BuildURL(s.Https, addr, s.Port))
+	}
 	urlList = append(urlList, util.BuildURL(s.Https, s.Domain, s.Port))
 
 	fmt.Printf("  https: %v\n", s.Https)
@@ -98,7 +112,11 @@ func (s *Server) PrintArgs() {
 	if s.Https {
 		fmt.Printf(" use CA: %s\n", s.caFile)
 	}
-	fmt.Printf("    url: %v\n", strings.Join(urlList, " , "))
+	fmt.Printf("    url: %v\n", urlList[0])
+
+	for _, item := range urlList[1:] {
+		fmt.Printf("         %v\n", item)
+	}
 
 	time.Sleep(time.Second * 3)
 	fmt.Println("press ctrl-c to stop.")
