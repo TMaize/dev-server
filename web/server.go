@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
-	"path"
 	"strings"
 	"time"
 
@@ -21,6 +19,7 @@ type Server struct {
 	Port        uint
 	Domain      string
 	Root        string
+	UI          bool
 	caFile      string
 	cerData     []byte
 	keyData     []byte
@@ -109,6 +108,7 @@ func (s *Server) PrintArgs() {
 	fmt.Printf("address: %s\n", s.Address)
 	fmt.Printf("   port: %d\n", s.Port)
 	fmt.Printf("   root: %s\n", s.Root)
+	fmt.Printf(" web ui: %v\n", s.UI)
 	if s.Https {
 		fmt.Printf(" use CA: %s\n", s.caFile)
 	}
@@ -123,33 +123,21 @@ func (s *Server) PrintArgs() {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	file := path.Join(s.Root, r.URL.Path)
-	info, err := os.Stat(file)
+	reqPath := r.URL.Path
+	method := r.Method
 
 	if r.Method == "GET" {
 		w.Header().Set("Cache-Control", "no-cache")
 	}
 
-	if err != nil {
-		if os.IsNotExist(err) {
-			Render404(w, r)
-		} else {
-			Render500(w, r, err)
-		}
+	// 响应文件json信息
+	if method == "GET" && strings.HasPrefix(reqPath, "/:/") {
+		r.URL.Path = r.URL.Path[2:]
+		RenderInfo(s, w, r)
 		return
 	}
 
-	if strings.HasSuffix(r.URL.Path, "/") && info.IsDir() {
-		RenderDir(w, r, file)
-		return
-	}
-
-	if !strings.HasSuffix(r.URL.Path, "/") && !info.IsDir() {
-		RenderFile(w, r, file)
-		return
-	}
-
-	Render404(w, r)
+	RenderStatic(s, w, r)
 }
 
 func (s *Server) Run() error {

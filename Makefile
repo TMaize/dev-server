@@ -1,12 +1,14 @@
-.PHONY: build clean win linux mac
+.PHONY: build clean ui win linux mac
 #.ONESHELL:
 
 # go build -ldflags "-X main.Version=$(git describe --tags)"
 
-build: clean win linux mac mac2
+build: clean ui win linux mac mac2
 clean:
 	rm -rf dist
 	mkdir -p dist
+ui:
+	cd ui && yarn && npm run build
 win:
 	GOOS=windows GOARCH=amd64 go build -ldflags "-w -X main.Version=$$(git describe --tags)" -o ./dist/dev-server.exe main.go
 	cd dist && 7z a -sdel dev-server-win32-x64.zip dev-server.exe

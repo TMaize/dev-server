@@ -8,6 +8,7 @@ import (
 
 type CmdArgs struct {
 	https   *bool
+	ui      *bool
 	address *string
 	port    *uint
 	domain  *string
@@ -32,6 +33,7 @@ func GetCmd() *cobra.Command {
 				Port:    *cmdArgs.port,
 				Domain:  *cmdArgs.domain,
 				Root:    cmdArgs.root,
+				UI:      *cmdArgs.ui,
 			}
 
 			if err := server.Run(); err != nil {
@@ -43,6 +45,7 @@ func GetCmd() *cobra.Command {
 
 	cmdArgs = CmdArgs{
 		https:   command.Flags().BoolP("https", "s", false, "enable https"),
+		ui:      command.Flags().Bool("ui", false, "list files with ui"),
 		address: command.Flags().StringP("address", "a", "0.0.0.0", "listen address"),
 		port:    command.Flags().UintP("port", "p", 0, "listen port (default 80/443)"),
 		domain:  command.Flags().String("domain", "localhost", "generate cert for domain"),

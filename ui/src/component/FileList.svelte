@@ -1,5 +1,8 @@
 <script>
   import FileItem from './FileItem.svelte'
+  /**
+   * @type {object[]}
+   */
   export let files = []
 </script>
 

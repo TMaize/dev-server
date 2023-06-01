@@ -1,16 +1,29 @@
 <script>
-  export let file = {}
-  let o = {
-    count: 1
-  }
+  import router from '../router.js'
+  /**
+   * @type {{name: string, type: string}}
+   */
+  export let file = undefined
 
-  function inc(){
-    o.count++
+  function clickRow() {
+    if (file.type == 'dir') {
+      const nextPath = `${router.current()}/${file.name}/`.replace(/\/{2,}/, '/')
+      router.push(nextPath)
+    }
+    if (file.type == 'file') {
+      const nextPath = `${router.current()}/${file.name}`.replace(/\/{2,}/, '/')
+      window.open(nextPath, '_blank')
+    }
   }
 </script>
 
-<li on:click={inc}>
-  {file.name} / {o.count}
+<li on:click={clickRow}>
+  {#if file.type == 'dir'}
+    <img src="../assets/dir.svg" alt="" />
+  {:else}
+    <img src="../assets/file.svg" alt="" />
+  {/if}
+  <span>{file.name}</span>
 </li>
 
 <style lang="less">
