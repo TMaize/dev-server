@@ -1,6 +1,7 @@
 import App from './App.svelte'
 import router from './router'
 import './style.css'
+import './icons/index.css'
 
 
 router.init()

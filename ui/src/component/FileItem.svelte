@@ -5,7 +5,8 @@
    */
   export let file = undefined
 
-  function clickRow() {
+  function clickRow(ev) {
+    if (ev.type === 'keydown' && ev.key !== 'Enter') return
     if (file.type == 'dir') {
       const nextPath = `${router.current()}/${file.name}/`.replace(/\/{2,}/, '/')
       router.push(nextPath)
@@ -17,22 +18,23 @@
   }
 </script>
 
-<li on:click={clickRow}>
+<li on:click={clickRow} on:keydown={clickRow}>
   {#if file.type == 'dir'}
-    <img src="../assets/dir.svg" alt="" />
+    <div class="icon-base icon-dir" />
   {:else}
-    <img src="../assets/file.svg" alt="" />
+    <div class="icon-base icon-file" />
   {/if}
   <span>{file.name}</span>
 </li>
 
 <style lang="less">
   li {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    padding: 8px 16px;
-    text-decoration: none;
-    border-top: 1px solid #d0d7de;
+    // display: flex;
+    // flex-flow: row nowrap;
+    // align-items: center;
+    // padding: 8px 16px;
+    // text-decoration: none;
+    // border-top: 1px solid #d0d7de;
+    // font-size: 16px;
   }
 </style>

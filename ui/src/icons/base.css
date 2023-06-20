@@ -1,0 +1,10 @@
+.icon-base {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  color: inherit;
+  background-color: currentColor;
+  mask-size: 100% 100%;
+  -webkit-mask-size: 100% 100%;
+}
