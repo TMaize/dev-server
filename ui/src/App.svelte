@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import router from './router'
   import FileList from './component/FileList.svelte'
-
+  import PageFooter from './component/PageFooter.svelte'
   let files = []
 
   async function loadData(ev) {
@@ -23,6 +23,5 @@
   onMount(loadData)
 </script>
 
-<div>
-  <FileList {files} />
-</div>
+<FileList {files} />
+<PageFooter />

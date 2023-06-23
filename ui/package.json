@@ -18,7 +18,7 @@
     "less": "^4.1.3",
     "svelte": "^3.58.0",
     "svelte-preprocess-import-assets": "^1.0.0",
-    "svg-css-icon": "^0.2.0",
+    "svg-css-icon": "^0.2.1",
     "vite": "^4.3.9"
   }
 }

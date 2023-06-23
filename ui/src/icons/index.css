@@ -12,17 +12,20 @@
 .ic-dir {
   --data: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBkPSJNMS43NSAxQTEuNzUgMS43NSAwIDAgMCAwIDIuNzV2MTAuNUMwIDE0LjIxNi43ODQgMTUgMS43NSAxNWgxMi41QTEuNzUgMS43NSAwIDAgMCAxNiAxMy4yNXYtOC41QTEuNzUgMS43NSAwIDAgMCAxNC4yNSAzSDcuNWEuMjUuMjUgMCAwIDEtLjItLjFsLS45LTEuMkM2LjA3IDEuMjYgNS41NSAxIDUgMUgxLjc1eiIvPjwvc3ZnPg==);
   mask-image: var(--data);
-  -webkit-mask-image: var(--data); background-color: currentColor;
+  -webkit-mask-image: var(--data);
+  background-color: currentColor;
 }
 
 .ic-file {
   --data: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0zLjc1IDEuNWEuMjUuMjUgMCAwIDAtLjI1LjI1djExLjVjMCAuMTM4LjExMi4yNS4yNS4yNWg4LjVhLjI1LjI1IDAgMCAwIC4yNS0uMjVWNkg5Ljc1QTEuNzUgMS43NSAwIDAgMSA4IDQuMjVWMS41SDMuNzV6bTUuNzUuNTZ2Mi4xOWMwIC4xMzguMTEyLjI1LjI1LjI1aDIuMTlMOS41IDIuMDZ6TTIgMS43NUMyIC43ODQgMi43ODQgMCAzLjc1IDBoNS4wODZjLjQ2NCAwIC45MDkuMTg0IDEuMjM3LjUxM2wzLjQxNCAzLjQxNGMuMzI5LjMyOC41MTMuNzczLjUxMyAxLjIzN3Y4LjA4NkExLjc1IDEuNzUgMCAwIDEgMTIuMjUgMTVoLTguNUExLjc1IDEuNzUgMCAwIDEgMiAxMy4yNVYxLjc1eiIvPjwvc3ZnPg==);
   mask-image: var(--data);
-  -webkit-mask-image: var(--data); background-color: currentColor;
+  -webkit-mask-image: var(--data);
+  background-color: currentColor;
 }
 
 .ic-home {
   --data: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04LjM4IDEuMzUzIDggMS4xMzFsLS4zOC4yMjItNy4yNSA0LjI1YS43NS43NSAwIDAgMCAuNzYgMS4yOTRsLjg3LS41MVYxNGgxMlY2LjM4N2wuODcuNTFhLjc1Ljc1IDAgMSAwIC43Ni0xLjI5NGwtNy4yNS00LjI1Wm00LjEyIDQuMTU0TDggMi44NyAzLjUgNS41MDdWMTIuNUg2VjhoNHY0LjVoMi41VjUuNTA3Wk04LjUgOS41djNoLTF2LTNoMVoiIGNsaXAtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==);
   mask-image: var(--data);
-  -webkit-mask-image: var(--data); background-color: currentColor;
+  -webkit-mask-image: var(--data);
+  background-color: currentColor;
 }
