@@ -491,10 +491,10 @@ svelte@^3.58.0:
   resolved "https://registry.npmmirror.com/svelte/-/svelte-3.59.1.tgz#3de3d56b9165748f32f3131589b8d183cabe7449"
   integrity sha512-pKj8fEBmqf6mq3/NfrB9SLtcJcUvjYSWyePlfCqN9gujLB25RitWK8PvFzlwim6hD/We35KbPlRteuA6rnPGcQ==
 
-svg-css-icon@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.npmmirror.com/svg-css-icon/-/svg-css-icon-0.2.1.tgz#1990f690aa2c0fb8fac582b8e5d01e7403c07751"
-  integrity sha512-j5iAXjtq6vD0LD4xFroJ39xmpBCfONQQnB1fnk+OXpGm8pXOByzKdJkOruSyqYTcMqzxBxPOzQlHKjelrKPsfQ==
+svg-css-icon@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npmmirror.com/svg-css-icon/-/svg-css-icon-0.3.0.tgz#db6e813dc6ac62a01754f991d4895b86743cd129"
+  integrity sha512-NGet0kkv01vNhIkXFduksWJzrJqr5JkB21hKxN3BSBsfghAMw2uqgagHVHpIUqO/bYPCC/16Ek05QWFGvlb4JA==
   dependencies:
     "@trysound/sax" "0.2.0"
     svgo "^3.0.2"
