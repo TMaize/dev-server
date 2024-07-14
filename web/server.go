@@ -172,5 +172,13 @@ func (s *Server) Run() error {
 		return server.ListenAndServeTLS("", "")
 	}
 
-	return server.ListenAndServe()
+	// ipv4 and ipv6
+	//return server.ListenAndServe()
+
+	// ipv4
+	ln, err := net.Listen("tcp4", server.Addr)
+	if err != nil {
+		return err
+	}
+	return server.Serve(ln)
 }
